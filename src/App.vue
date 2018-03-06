@@ -1,5 +1,5 @@
 <template>
-  <div class="conatiner" style="width: 200px; height: 400px">
+  <div class="application-container">
     <transition name="fade">
       <router-view />
     </transition>
@@ -13,6 +13,8 @@ export default {
 </script>
 
 <style lang="sass">
+@import assets/sass/app
+
 .fade-enter-active, .fade-leave-active
   transition-property: opacity
   transition-duration: .3s
