@@ -4,7 +4,12 @@ const config = require('../webpack.config')
 const Server = require('webpack-dev-server')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
-config.entry.unshift('webpack-dev-server/client/index.js?http://localhost:8080', 'webpack/hot/dev-server')
+Object.keys(config.entry).forEach((key) => {
+  config.entry[key] = [
+    'webpack-dev-server/client/index.js?http://localhost:8080',
+    'webpack/hot/dev-server'
+  ].concat(config.entry[key]);
+});
 
 const compiler = webpack(merge(config, {
   plugins: [
@@ -20,7 +25,7 @@ const compiler = webpack(merge(config, {
 
 const server = new Server(compiler, {
   publicPath: '/dist/',
-  filename: 'build.js',
+  filename: 'popup.js',
   hot: true,
   stats: { colors: true, cache: true },
   quiet: true

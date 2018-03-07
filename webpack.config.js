@@ -1,11 +1,14 @@
 const basePath = require('./build/helpers').basePath
 
 module.exports = {
-  entry: ['./src/main.js'],
+  entry: {
+    popup: './src/main.js',
+    content: './content/main.js'
+  },
   output: {
     path: basePath('dist'),
     publicPath: '/dist/',
-    filename: 'build.js'
+    filename: '[name].js'
   },
   resolve: {
     extensions: ['.js', '.vue'],

@@ -4,5 +4,11 @@
   "version": "1.0.0",
   "browser_action": {
     "default_popup": "index.html"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["dist/content.js"]
+    }
+  ]
 }
