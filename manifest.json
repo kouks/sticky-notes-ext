@@ -1,7 +1,8 @@
 {
-  "manifest_version": 2,
   "name": "Sticky Notes",
   "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "Sticky Notes is a browser extension that allows you to login and easily create notes on any page.",
   "browser_action": {
     "default_popup": "index.html"
   },
@@ -10,5 +11,8 @@
       "matches": ["http://*/*", "https://*/*"],
       "js": ["dist/content.js"]
     }
-  ]
+  ],
+  "background": {
+    "scripts": ["dist/background.js"]
+  }
 }

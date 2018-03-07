@@ -2,7 +2,7 @@
   "name": "sticky-notes-extension",
   "version": "1.0.0",
   "description": "Sticky Notes Chrome Extension",
-  "main": "src/main.js",
+  "main": "src/popup/main.js",
   "scripts": {
     "watch": "node build/dev.js",
     "build": "node build/prod.js",

@@ -34,7 +34,7 @@ function test (e) {
 }
 
 function test2 (e) {
-  if (! creating) return;
+  if (!creating) return
   note.style.width = (e.clientX - startX) + 'px'
   note.style.height = (e.clientY - startY) + 'px'
 }

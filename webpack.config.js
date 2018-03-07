@@ -2,8 +2,9 @@ const basePath = require('./build/helpers').basePath
 
 module.exports = {
   entry: {
-    popup: './src/main.js',
-    content: './content/main.js'
+    popup: './src/popup/main.js',
+    content: './src/content/main.js',
+    background: './src/background/main.js'
   },
   output: {
     path: basePath('dist'),
@@ -13,7 +14,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue'],
     alias: {
-      '@': basePath('src'),
+      '@': basePath('src/popup'),
       'config': basePath('config'),
       'vue$': 'vue/dist/vue.runtime.esm.js'
     }
@@ -24,12 +25,12 @@ module.exports = {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         enforce: 'pre',
-        include: [basePath('src')],
+        include: [basePath('src/popup'), basePath('src/content'), basePath('src/background')],
       },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        include: [basePath('src')],
+        include: [basePath('src/popup'), basePath('src/content'), basePath('src/background')],
         options: {
           loaders: {
             scss: 'vue-style-loader!css-loader!sass-loader',
@@ -40,7 +41,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [basePath('src')]
+        include: [basePath('src/popup'), basePath('src/content'), basePath('src/background')]
       },
     ]
   }
