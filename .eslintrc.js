@@ -5,7 +5,8 @@ module.exports = {
   plugins: [
     'html'
   ],
-  'rules': {
-    'arrow-parens': 0
+  rules: {
+    'valid-jsdoc': 'error',
+    'require-jsdoc': 'error'
   }
 }
