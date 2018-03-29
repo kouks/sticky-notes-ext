@@ -1,0 +1,23 @@
+
+.app-list
+  text-align: left
+  width: 100%
+
+  .app-list-item
+    padding: 7px
+    cursor: pointer
+    transition: .2s background-color ease
+
+    &:not(:last-child)
+      border-bottom: 1px solid $white-ter
+
+    &:hover
+      background-color: $white-ter
+
+    .app-list-controls
+      color: $grey-light
+
+      *:hover
+        color: $primary
+
+

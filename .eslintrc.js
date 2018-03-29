@@ -7,6 +7,7 @@ module.exports = {
   ],
   rules: {
     'valid-jsdoc': 'error',
-    'require-jsdoc': 'error'
+    'require-jsdoc': 'error',
+    'no-return-assign': 0
   }
 }

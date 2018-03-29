@@ -3,6 +3,8 @@ import App from './App'
 import routes from './routes'
 import Router from 'vue-router'
 
+require('./filters')
+
 Vue.use(Router)
 
 export default new Vue({
