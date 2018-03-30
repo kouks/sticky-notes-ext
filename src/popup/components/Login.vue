@@ -4,6 +4,8 @@
       <span class="app-title is-1">Login</span>
     </header>
 
+    <navbar />
+
     <main class="app-content is-centered">
       <form class="app-form">
         <div class="app-form-field has-addons">
@@ -17,8 +19,8 @@
         </div>
 
         <div class="app-form-controls">
-          <button type="button" class="app-button is-primary is-block">Login</button>
-          <button type="button" class="app-button is-link is-block">No account yet</button>
+          <button type="button" class="app-button is-primary">Login</button>
+          <button type="button" class="app-button is-link">No account yet</button>
         </div>
       </form>
     </main>
@@ -26,7 +28,9 @@
 </template>
 
 <script>
+import Navbar from '@/popup/components/partials/Navbar'
+
 export default {
-  //
+  components: { Navbar }
 }
 </script>

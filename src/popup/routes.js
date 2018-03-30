@@ -1,5 +1,6 @@
-import Home from '@/components/Home'
-import Login from '@/components/Login'
+import New from '@/popup/components/New'
+import Home from '@/popup/components/Home'
+import Login from '@/popup/components/Login'
 
 export default [
   {
@@ -9,5 +10,9 @@ export default [
   {
     path: '/login',
     component: Login
+  },
+  {
+    path: '/new',
+    component: New
   }
 ]

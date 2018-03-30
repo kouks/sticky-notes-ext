@@ -1,7 +1,5 @@
 <template>
-  <transition name="fade">
-    <router-view />
-  </transition>
+  <router-view />
 </template>
 
 <script>
@@ -12,14 +10,4 @@ export default {
 
 <style lang="sass">
 @import assets/sass/app
-
-.fade-enter-active, .fade-leave-active
-  transition-property: opacity
-  transition-duration: .3s
-
-.fade-enter-active
-  transition-delay: .3s
-
-.fade-enter, .fade-leave-active
-  opacity: 0
 </style>

@@ -1,0 +1,83 @@
+
+export default {
+  /**
+   * @var {Object} listeners - The listeners object
+   */
+  listeners: {},
+
+  /**
+   * @var {string} name - The name
+   */
+  name: '',
+
+  /**
+   * @var {Port} port - The chrome messaging port
+   */
+  port: null,
+
+  /**
+   * Initialize the server. Note that the server acts as a client also.
+   *
+   * @param {string} name - The server name
+   * @returns {void}
+   */
+  init (name) {
+    this.name = name
+
+    chrome.extension.onConnect.addListener((port) => {
+      this.port = port
+
+      this.port.onMessage.addListener((message) => {
+        if (message.recipient === this.name) {
+          return this._dispatch(message)
+        }
+
+        port.postMessage(message)
+      })
+    })
+  },
+
+  /**
+   * Assign a listener to provided event.
+   *
+   * @param {string} name - The server name
+   * @param {function} callback - The callback to be invoked
+   * @returns {void}
+   */
+  listen (event, callback) {
+    if (this.listeners[event] === undefined) {
+      return this.listeners[event] = [callback]
+    }
+
+    this.listeners[event].push(callback)
+  },
+
+  /**
+   * Sends a new message to a provided recipient.
+   *
+   * @param {string} recipient - The recipient name
+   * @param {string} event - The event name
+   * @param {Object} payload - The payload to be sent
+   * @returns {void}
+   */
+  send (recipient, event, payload) {
+    this.port.postMessage({ recipient, event, payload })
+  },
+
+  /**
+   * Dispatches an event.
+   *
+   * @private
+   * @param {Object} message - The message to be dispatched
+   * @returns {void}
+   */
+  _dispatch (message) {
+    for (let key in this.listeners) {
+      if (key !== message.event) {
+        continue;
+      }
+
+      this.listeners[key].forEach(listener => listener(message.payload))
+    }
+  }
+}

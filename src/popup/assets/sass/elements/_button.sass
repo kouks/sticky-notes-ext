@@ -5,7 +5,7 @@
   border: none
   cursor: pointer
   font-size: $size-6
-  padding: 12px 15px
+  padding: 10px 15px
   transition: .2s box-shadow ease
   outline: none
 
@@ -21,27 +21,31 @@
     background-color: $secondary
 
   &.is-link
+    color: $grey-darker
+
     &:hover
       box-shadow: none
       text-decoration: underline
 
 .app-add-note
-  cursor: pointer
-  position: absolute
-  bottom: 20px
-  right: 30px
-  background: $primary
-  border: none
-  border-radius: 50%
-  padding: 12px 13.5px
-  color: $white-ter
   animation: pulse 2s infinite
+  background: $primary
+  border-radius: 50%
+  border: none
+  bottom: 20px
+  color: $white-ter
+  cursor: pointer
+  line-height: 0
   outline: none
+  padding: 12px 13.5px
+  position: absolute
+  right: 30px
   transition: .2s box-shadow ease
 
   &:hover
     animation: none
     box-shadow: 0 0 0 1px $primary
+    color: $white-ter
 
   &:active
     animation: none

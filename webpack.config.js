@@ -14,7 +14,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue'],
     alias: {
-      '@': basePath('src/popup'),
+      '@': basePath('src'),
       'config': basePath('config'),
       'vue$': 'vue/dist/vue.runtime.esm.js'
     }
