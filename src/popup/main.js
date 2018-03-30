@@ -2,9 +2,15 @@ import Vue from 'vue'
 import App from './App'
 import routes from './routes'
 import Router from 'vue-router'
+import Comms from '@/common/comms/Client'
 
+// Initialize communication with background and content scripts.
+Comms.init('popup')
+
+// Load custom vue filters.
 require('./filters')
 
+// Load the vue router.
 Vue.use(Router)
 
 export default new Vue({

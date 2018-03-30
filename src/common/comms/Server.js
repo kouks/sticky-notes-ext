@@ -11,9 +11,9 @@ export default {
   name: '',
 
   /**
-   * @var {Port} port - The chrome messaging port
+   * @var {Object} ports - All the comm ports sorted by a url key
    */
-  port: null,
+  ports: {},
 
   /**
    * Initialize the server. Note that the server acts as a client also.
@@ -25,14 +25,14 @@ export default {
     this.name = name
 
     chrome.extension.onConnect.addListener((port) => {
-      this.port = port
+      this.ports[port.sender.url] = port
 
-      this.port.onMessage.addListener((message) => {
+      port.onMessage.addListener((message) => {
         if (message.recipient === this.name) {
           return this._dispatch(message)
         }
 
-        port.postMessage(message)
+        Object.values(this.ports).forEach(port => port.postMessage(message))
       })
     })
   },
@@ -44,7 +44,7 @@ export default {
    * @param {function} callback - The callback to be invoked
    * @returns {void}
    */
-  listen (event, callback) {
+  on (event, callback) {
     if (this.listeners[event] === undefined) {
       return this.listeners[event] = [callback]
     }
@@ -61,7 +61,7 @@ export default {
    * @returns {void}
    */
   send (recipient, event, payload) {
-    this.port.postMessage({ recipient, event, payload })
+    Object.values(this.ports).forEach(port => port.postMessage({ recipient, event, payload }))
   },
 
   /**

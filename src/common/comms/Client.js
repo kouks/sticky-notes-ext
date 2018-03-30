@@ -6,6 +6,11 @@ import Server from './Server'
  */
 export default Object.assign(Server, {
   /**
+   * @var {Port} port - The chrome messaging port
+   */
+  port: null,
+
+  /**
    * Initialize the client.
    *
    * @param {string} name - The client name
@@ -20,5 +25,17 @@ export default Object.assign(Server, {
         this._dispatch(message)
       }
     })
-  }
+  },
+
+  /**
+   * Sends a new message to a provided recipient.
+   *
+   * @param {string} recipient - The recipient name
+   * @param {string} event - The event name
+   * @param {Object} payload - The payload to be sent
+   * @returns {void}
+   */
+  send (recipient, event, payload) {
+    this.port.postMessage({ recipient, event, payload })
+  },
 })
