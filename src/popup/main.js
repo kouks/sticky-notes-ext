@@ -4,11 +4,7 @@ import routes from './routes'
 import Router from 'vue-router'
 import Comms from '@/common/comms/Client'
 
-// Initialize communication with background and content scripts.
-Comms.init('popup')
-
-Comms.send('content/test', { test: 'popup to content' })
-Comms.send('background/test', { test: 'popup to bg' })
+Comms.listen('popup')
 
 // Load custom vue filters.
 require('./filters')

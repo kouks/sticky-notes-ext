@@ -1,49 +1,21 @@
 
 export default {
   /**
-   * @var {Object} listeners - The listeners object
+   * @var {Object} listeners - The listeners object.
    */
   listeners: {},
 
   /**
-   * @var {string} name - The name
-   */
-  name: '',
-
-  /**
-   * @var {Port} port - The chrome messaging port
-   */
-  port: null,
-
-  /**
-   * Initialize the client.
+   * Initialize the server.
    *
-   * @param {string} name - The client name
    * @returns {void}
    */
-  init (name) {
-    this.name = name
-
+  listen (name) {
     chrome.runtime.onMessage.addListener((request, sender, respond) => {
-      console.log(request, sender, respond)
-
-      respond('asd')
+      if (request.recipient === name) {
+        this._dispatch(request, respond)
+      }
     })
-  },
-
-  /**
-   * Assign a listener to provided event.
-   *
-   * @param {string} name - The server name
-   * @param {function} callback - The callback to be invoked
-   * @returns {void}
-   */
-  on (event, callback) {
-    if (this.listeners[event] === undefined) {
-      return this.listeners[event] = [callback]
-    }
-
-    this.listeners[event].push(callback)
   },
 
   /**
@@ -51,30 +23,94 @@ export default {
    *
    * @param {string} destination - The destination
    * @param {Object} payload - The payload to be sent
-   * @returns {void}
+   * @returns {Promise} - The callback promise
    */
   send (destination, payload) {
     let [recipient, event] = destination.split('/')
 
-    chrome.runtime.sendMessage({ recipient, event, payload }, (response) => {
-      console.log(response);
-    });
+    return new Promise((resolve) => {
+      this._resolveDestination({ recipient, event, payload }, resolve)
+    })
+  },
+
+  /**
+   * Assign a listener to provided event.
+   *
+   * @param {string} event - The event name
+   * @param {function} listener - The listener to be invoked
+   * @returns {void}
+   */
+  on (event, listener) {
+    if (this.listeners[event] === undefined) {
+      this.listeners[event] = [listener]
+
+      return
+    }
+
+    this.listeners[event].push(listener)
+  },
+
+  /**
+   * Resolves the destination.
+   *
+   * @private
+   * @param {Object} request - The request to be dispatched
+   * @param {function} respond - The response callback
+   * @returns {void}
+   */
+  _resolveDestination (request, respond) {
+    switch (request.recipient) {
+      case 'background':
+      case 'popup':
+        this._sendToExtension(request, respond)
+        break
+
+      case 'content':
+        this._sendToActiveTab(request, respond)
+    }
+  },
+
+  /**
+   * Sends an event the extension.
+   *
+   * @private
+   * @param {Object} request - The request to be dispatched
+   * @param {function} respond - The response callback
+   * @returns {void}
+   */
+  _sendToExtension (request, respond) {
+    chrome.extension.sendMessage(request, res => respond(res))
+  },
+
+  /**
+   * Sends an event to an active tab.
+   *
+   * @private
+   * @param {Object} request - The request to be dispatched
+   * @param {function} respond - The response callback
+   * @returns {void}
+   */
+  _sendToActiveTab (request, respond) {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs.pop().id, request, res => respond(res))
+    })
   },
 
   /**
    * Dispatches an event.
    *
    * @private
-   * @param {Object} message - The message to be dispatched
+   * @param {Object} request - The request to be dispatched
+   * @param {function} respond - The response callback
    * @returns {void}
    */
-  _dispatch (message) {
+  _dispatch (request, respond) {
     for (let key in this.listeners) {
-      if (key !== message.event) {
-        continue;
+      if (key !== request.event) {
+        continue
       }
 
-      this.listeners[key].forEach(listener => listener(message.payload))
+      this.listeners[key].forEach(listener => listener({ request: request.payload, respond }))
     }
   }
 }
