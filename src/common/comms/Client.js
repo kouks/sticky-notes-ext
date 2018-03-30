@@ -4,7 +4,7 @@ import Server from './Server'
  * The client comms object inherits functions from the server, overriding only
  * the init function.
  */
-export default Object.assign(Server, {
+export default Object.assign(Object.assign({}, Server), {
   /**
    * @var {Port} port - The chrome messaging port
    */
@@ -30,12 +30,13 @@ export default Object.assign(Server, {
   /**
    * Sends a new message to a provided recipient.
    *
-   * @param {string} recipient - The recipient name
-   * @param {string} event - The event name
+   * @param {string} destination - The destination
    * @param {Object} payload - The payload to be sent
    * @returns {void}
    */
-  send (recipient, event, payload) {
+  send (destination, payload) {
+    let [recipient, event] = destination.split('/')
+
     this.port.postMessage({ recipient, event, payload })
   },
 })

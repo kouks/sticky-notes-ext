@@ -25,6 +25,8 @@ export default {
     this.name = name
 
     chrome.extension.onConnect.addListener((port) => {
+      console.log(port, 'Asdasd')
+      port.postMessage({ recipient: 'background', event: 'test', payload: 'testasdasddas' })
       this.ports[port.sender.url] = port
 
       port.onMessage.addListener((message) => {
@@ -55,12 +57,13 @@ export default {
   /**
    * Sends a new message to a provided recipient.
    *
-   * @param {string} recipient - The recipient name
-   * @param {string} event - The event name
+   * @param {string} destination - The destination
    * @param {Object} payload - The payload to be sent
    * @returns {void}
    */
-  send (recipient, event, payload) {
+  send (destination, payload) {
+    let [recipient, event] = destination.split('/')
+
     Object.values(this.ports).forEach(port => port.postMessage({ recipient, event, payload }))
   },
 
