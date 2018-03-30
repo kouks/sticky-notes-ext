@@ -1,10 +1,15 @@
-import Server from './Server'
 
-/**
- * The client comms object inherits functions from the server, overriding only
- * the init function.
- */
-export default Object.assign(Object.assign({}, Server), {
+export default {
+  /**
+   * @var {Object} listeners - The listeners object
+   */
+  listeners: {},
+
+  /**
+   * @var {string} name - The name
+   */
+  name: '',
+
   /**
    * @var {Port} port - The chrome messaging port
    */
@@ -18,13 +23,27 @@ export default Object.assign(Object.assign({}, Server), {
    */
   init (name) {
     this.name = name
-    this.port = chrome.extension.connect({ name: 'comms' })
 
-    this.port.onMessage.addListener((message) => {
-      if (message.recipient === this.name) {
-        this._dispatch(message)
-      }
+    chrome.runtime.onMessage.addListener((request, sender, respond) => {
+      console.log(request, sender, respond)
+
+      respond('asd')
     })
+  },
+
+  /**
+   * Assign a listener to provided event.
+   *
+   * @param {string} name - The server name
+   * @param {function} callback - The callback to be invoked
+   * @returns {void}
+   */
+  on (event, callback) {
+    if (this.listeners[event] === undefined) {
+      return this.listeners[event] = [callback]
+    }
+
+    this.listeners[event].push(callback)
   },
 
   /**
@@ -37,6 +56,25 @@ export default Object.assign(Object.assign({}, Server), {
   send (destination, payload) {
     let [recipient, event] = destination.split('/')
 
-    this.port.postMessage({ recipient, event, payload })
+    chrome.runtime.sendMessage({ recipient, event, payload }, (response) => {
+      console.log(response);
+    });
   },
-})
+
+  /**
+   * Dispatches an event.
+   *
+   * @private
+   * @param {Object} message - The message to be dispatched
+   * @returns {void}
+   */
+  _dispatch (message) {
+    for (let key in this.listeners) {
+      if (key !== message.event) {
+        continue;
+      }
+
+      this.listeners[key].forEach(listener => listener(message.payload))
+    }
+  }
+}
