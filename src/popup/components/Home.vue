@@ -17,8 +17,8 @@
       <ul class="app-list">
         <li class="app-list-item" v-for="note in notes">
           <div class="app-list-controls is-pulled-right">
-            <i class="fas fa-pen-square"></i>
-            &nbsp;
+            <!-- <i class="fas fa-pen-square"></i> -->
+            <!-- &nbsp; -->
             <i class="fas fa-ban"></i>
           </div>
           <strong>{{ note.body | limit(25) }}</strong><br>

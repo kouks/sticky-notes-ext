@@ -6,13 +6,20 @@ export default {
   listeners: {},
 
   /**
+   * @var {string} name - The server name.
+   */
+  name: null,
+
+  /**
    * Initialize the server.
    *
    * @returns {void}
    */
   listen (name) {
+    this.name = name
+
     chrome.runtime.onMessage.addListener((request, sender, respond) => {
-      if (request.recipient === name) {
+      if (request.recipient === this.name) {
         this._dispatch(request, respond)
       }
     })
@@ -60,6 +67,10 @@ export default {
    */
   _resolveDestination (request, respond) {
     switch (request.recipient) {
+      case this.name:
+        this._dispatch(request, respond)
+        break;
+
       case 'background':
       case 'popup':
         this._sendToExtension(request, respond)

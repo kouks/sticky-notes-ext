@@ -8,6 +8,7 @@ module.exports = {
   rules: {
     'valid-jsdoc': 'error',
     'require-jsdoc': 'error',
-    'no-undef': 0
+    'no-undef': 0,
+    'space-unary-ops': 0
   }
 }
