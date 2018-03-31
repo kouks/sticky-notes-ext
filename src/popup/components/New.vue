@@ -13,14 +13,17 @@
             class="app-form-textarea"
             placeholder="Note body..."
             rows="3"
+            v-model="form.body"
           ></textarea>
         </div>
 
         <div class="app-form-color-picker">
-          <div class="is-selected" style="background-color: #e37682;"></div>
-          <div style="background-color: #5f4d93;"></div>
-          <div style="background-color: #333;"></div>
-          <div style="background-color: #eee;"></div>
+          <div
+            v-for="color in colors"
+            :class="[form.backgroundColor === color.bg ? 'is-selected' : '']"
+            :style="{ backgroundColor: color.bg }"
+            @click="selectColor(color)"
+          ></div>
         </div>
 
         <!-- <div class="app-form-choice"> -->
@@ -56,13 +59,24 @@ export default {
 
   data () {
     return {
-      form: { color: 'white', backgroundColor: 'black', body: 'Test' }
+      form: { color: 'whitesmoke', backgroundColor: '#e37682' },
+      colors: [
+        { bg: '#e37682', text: 'whitesmoke' },
+        { bg: '#5f4d93', text: 'whitesmoke' },
+        { bg: '#333', text: 'whitesmoke' },
+        { bg: '#f4f4f4', text: '#333' }
+      ]
     }
   },
 
   methods: {
     createNote () {
       Client.send('content/create-note', this.form)
+    },
+
+    selectColor (color) {
+      this.form.color = color.text
+      this.form.backgroundColor = color.bg
     }
   }
 }

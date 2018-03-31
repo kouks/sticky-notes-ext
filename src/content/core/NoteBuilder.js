@@ -90,6 +90,7 @@ export default {
     this.note.style.color = this.data.color
     this.note.style.position = 'absolute'
     this.note.style.display = 'none'
+    this.note.style.padding = '10px'
     this.note.innerText = this.data.body
 
     this.cover.appendChild(this.note)
@@ -157,6 +158,8 @@ export default {
         top: this.top + 'px',
         width: this.width + 'px',
         height: this.height + 'px',
+        padding: '10px',
+        boxShadow: '0px 0px 12px -3px rgba(0, 0, 0, .7)',
         zIndex: 1000
       }
     })
