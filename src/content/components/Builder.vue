@@ -14,6 +14,7 @@ export default {
     return {
       styles: {},
       start: { x: 0, y: 0 },
+      page: { y: 0 },
       dragging: false
     }
   },
@@ -49,6 +50,7 @@ export default {
 
       this.start.x = e.clientX
       this.start.y = e.clientY
+      this.page.y = e.pageY
     },
 
     /*
@@ -69,6 +71,12 @@ export default {
      * The mouseup event.
      */
     onMouseUp () {
+      // If the position is absolute, we need to save the page Y instead of the
+      // client Y coord.
+      if (this.data.position === 'absolute') {
+        this.styles.top = this.page.y + 'px'
+      }
+
       this.$emit('done', {
         body: this.data.body,
         styles: this.styles
