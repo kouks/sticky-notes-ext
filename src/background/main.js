@@ -29,8 +29,9 @@ Comms.on('save-note', async ({ request }) => {
 Comms.on('load-notes', async () => {
   let id = await Store.sync.get('id')
   let tab = await Tabs.getActive()
+  let url = encodeURIComponent(tab.url)
 
-  axios.get(`${config.api.url}/notes?url=${tab.url}&id=${id}`)
+  axios.get(`${config.api.url}/notes?url=${url}&id=${id}`)
     .then((notes) => Comms.send('content/render-notes', notes.data))
 })
 

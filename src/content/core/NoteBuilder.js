@@ -151,7 +151,7 @@ export default {
     this.resolve({
       body: this.data.body,
       styles: {
-        position: 'absolute',
+        position: this.data.position,
         backgroundColor: this.data.backgroundColor,
         color: this.data.color,
         left: this.left + 'px',

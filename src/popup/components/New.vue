@@ -23,13 +23,21 @@
             :class="[form.backgroundColor === color.bg ? 'is-selected' : '']"
             :style="{ backgroundColor: color.bg }"
             @click="selectColor(color)"
-          ></div>
+          ><span :style="{ color: color.text }">A</span></div>
         </div>
 
-        <!-- <div class="app-form-choice"> -->
-          <!-- <button type="button" class="app-choice is-selected">Absolute</button> -->
-          <!-- <button type="button" class="app-choice">Fixed</button> -->
-        <!-- </div> -->
+        <div class="app-form-choice">
+          <button
+            type="button"
+            :class="['app-choice', form.position === 'absolute' ? 'is-selected' : '']"
+            @click="selectPosition('absolute')"
+          >Absolute</button>
+          <button
+            type="button"
+            :class="['app-choice', form.position === 'fixed' ? 'is-selected' : '']"
+            @click="selectPosition('fixed')"
+          >Fixed</button>
+        </div>
 
         <hr class="is-subtle">
 
@@ -59,7 +67,12 @@ export default {
 
   data () {
     return {
-      form: { color: 'whitesmoke', backgroundColor: '#e37682' },
+      form: {
+        body: '',
+        color: 'whitesmoke',
+        backgroundColor: '#e37682',
+        position: 'absolute'
+      },
       colors: [
         { bg: '#e37682', text: 'whitesmoke' },
         { bg: '#5f4d93', text: 'whitesmoke' },
@@ -77,6 +90,10 @@ export default {
     selectColor (color) {
       this.form.color = color.text
       this.form.backgroundColor = color.bg
+    },
+
+    selectPosition (position) {
+      this.form.position = position
     }
   }
 }
