@@ -12,6 +12,8 @@ Comms.on('create-note', ({ request }) => {
   // note positioning.
   NoteBuilder.create(request)
     .then(note => Comms.send('background/save-note', note))
+    .then(() => Comms.send('background/load-notes'))
+    .then(notes => Comms.send('content/render-notes', notes))
 })
 
 /**
@@ -29,3 +31,4 @@ Comms.on('render-notes', ({ request }) => {
  * domain.
  */
 Comms.send('background/load-notes')
+  .then(notes => Comms.send('content/render-notes', notes))

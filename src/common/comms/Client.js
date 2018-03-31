@@ -18,10 +18,12 @@ export default {
   listen (name) {
     this.name = name
 
-    chrome.runtime.onMessage.addListener((request, sender, respond) => {
-      if (request.recipient === this.name) {
-        this._dispatch(request, respond)
-      }
+    chrome.runtime.onConnect.addListener((port) => {
+      port.onMessage.addListener((request) => {
+        if (request.recipient === this.name) {
+          this._dispatch(request, res => port.postMessage(res))
+        }
+      })
     })
   },
 
@@ -69,7 +71,7 @@ export default {
     switch (request.recipient) {
       case this.name:
         this._dispatch(request, respond)
-        break;
+        break
 
       case 'background':
       case 'popup':
@@ -90,11 +92,15 @@ export default {
    * @returns {void}
    */
   _sendToExtension (request, respond) {
-    chrome.extension.sendMessage(request, res => respond(res))
+    let port = chrome.runtime.connect()
+
+    port.postMessage(request)
+
+    port.onMessage.addListener(res => respond(res))
   },
 
   /**
-   * Sends an event to an active tab.
+   * Sends an event the active tab.
    *
    * @private
    * @param {Object} request - The request to be dispatched
@@ -102,8 +108,12 @@ export default {
    * @returns {void}
    */
   _sendToActiveTab (request, respond) {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs.pop().id, request, res => respond(res))
+    chrome.tabs.query({ active: true, currentWindow: true}, (tabs) => {
+      let port = chrome.tabs.connect(tabs.pop().id)
+
+      port.postMessage(request)
+
+      port.onMessage.addListener(res => respond(res))
     })
   },
 

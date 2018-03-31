@@ -19,10 +19,10 @@
           <div class="app-list-controls is-pulled-right">
             <!-- <i class="fas fa-pen-square"></i> -->
             <!-- &nbsp; -->
-            <i class="fas fa-ban"></i>
+            <i class="fas fa-ban" @click="removeNote(note.id)"></i>
           </div>
           <strong>{{ note.body | limit(25) }}</strong><br>
-          <a class="is-size-7 has-text-primary">{{ note.uri }}</a>
+          <a class="is-size-7 has-text-primary">{{ note.url }}</a>
         </li>
       </ul>
     </main>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import Comms from '@/common/comms/Client'
 import Navbar from '@/popup/components/partials/Navbar'
 
 export default {
@@ -46,24 +47,26 @@ export default {
   data () {
     return {
       style: { transform: 'translateY(-56px)' },
-      notes: [
-        { id: 1, body: 'Need to read this', uri: 'pavelkoch.io' },
-        { id: 1, body: 'Nice article about machin learning', uri: 'pavelkoch.io/contact' },
-        { id: 1, body: 'Nice article about machine learning', uri: 'pavelkoch.io/contact' },
-        { id: 1, body: 'Nice article about machine learning', uri: 'pavelkoch.io/contact' },
-        { id: 1, body: 'Nice article about machine learning', uri: 'pavelkoch.io/contact' }
-      ]
+      notes: []
     }
   },
 
   mounted () {
-    // this.$nextTick(() => {
-    //   this.style = { transform: 'translateY(0)' }
+    this.loadNotes()
+  },
 
-    //   window.setTimeout(() => {
-    //     this.style = { transform: 'translateY(-56px)' }
-    //   }, 3000)
-    // })
+  methods: {
+    loadNotes () {
+      Comms.send('background/load-notes')
+        .then((notes) => { this.notes = notes })
+    },
+
+    removeNote (id) {
+      Comms.send('background/remove-note', { id })
+        .then(() => {
+          this.notes = this.notes.filter(note => note.id !== id)
+        })
+    }
   }
 }
 </script>
