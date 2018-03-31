@@ -1,6 +1,9 @@
 import Vue from 'vue'
 
-// Word limit filter.
+/*
+ * Vue filter that limits the number of words in a text by a specified character
+ * length.
+ */
 Vue.filter('limit', (value, length, trail = '...') => {
   if (length >= value.length) {
     return value

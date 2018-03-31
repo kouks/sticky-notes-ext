@@ -83,15 +83,25 @@ export default {
   },
 
   methods: {
+    /*
+     * Sending a request to the background script to create a new note based on
+     * data provided from the form.
+     */
     createNote () {
       Client.send('content/create-note', this.form)
     },
 
+    /*
+     * Helper to set a color that has been selected.
+     */
     selectColor (color) {
       this.form.color = color.text
       this.form.backgroundColor = color.bg
     },
 
+    /*
+     * Helper to set a position that has been selected.
+     */
     selectPosition (position) {
       this.form.position = position
     }

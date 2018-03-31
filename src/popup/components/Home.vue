@@ -56,11 +56,17 @@ export default {
   },
 
   methods: {
+    /*
+     * Loading all the notes from the background script.
+     */
     loadNotes () {
       Comms.send('background/load-notes')
         .then((notes) => { this.notes = notes })
     },
 
+    /*
+     * Sending a request to the background script to remove a note.
+     */
     removeNote (id) {
       Comms.send('background/remove-note', { id })
         .then(() => {

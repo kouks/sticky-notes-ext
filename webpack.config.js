@@ -30,7 +30,7 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        include: [basePath('src/popup'), basePath('src/content'), basePath('src/background')],
+        include: [basePath('src/popup'), basePath('src/content')],
         options: {
           loaders: {
             scss: 'vue-style-loader!css-loader!sass-loader',

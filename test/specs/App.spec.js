@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import { expect } from 'chai'
-import App from '../../src/components/Hello.vue'
+import Home from '../../src/popup/components/Home.vue'
 
 Vue.config.productionTip = false
 
-describe('App.vue', () => {
-  it('should print hello world.', () => {
-    const Compoment = Vue.extend(App)
+describe('Home.vue', () => {
+  it('should print dashboard.', () => {
+    const Compoment = Vue.extend(Home)
     const vm = new Compoment().$mount()
 
-    expect(vm.$el.querySelector('p').textContent).to.equal('Hello World')
+    expect(vm.$el.querySelector('span.app-title').textContent).to.equal('Dashboard')
   })
 })
