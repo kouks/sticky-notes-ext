@@ -9,7 +9,7 @@
     <builder
       v-show="builder.active"
       :data="builder.data"
-      @done="(note) => { saveNote(note) }"
+      @done="saveNote"
     />
   </div>
 </template>

@@ -1,7 +1,12 @@
 <template>
   <div class="note-builder">
-    <div class="note-builder-cover" ref="cover">
-      <div class="note-mock" ref="note" :style="styles">{{ data.body }}</div>
+    <div
+      class="note-builder-cover"
+      @mousedown="startCreatingNote"
+      @mousemove="resizeNote"
+      @mouseup="saveNote"
+    >
+      <div class="note-mock" :style="styles">{{ data.body }}</div>
     </div>
   </div>
 </template>
@@ -19,26 +24,12 @@ export default {
     }
   },
 
-  mounted () {
-    this.registerMouseEvents()
-  },
-
   methods: {
     /*
-     * Registering mouse evens on the cover element.
+     * Start creating the note element upon the mousedown event.
      */
-    registerMouseEvents () {
-      this.$refs.cover.onmousedown = (e) => this.onMouseDown(e)
-      this.$refs.cover.onmousemove = (e) => this.onMouseMove(e)
-      this.$refs.cover.onmouseup = (e) => this.onMouseUp(e)
-    },
-
-    /*
-     * The mousedown event.
-     */
-    onMouseDown (e) {
+    startCreatingNote (e) {
       this.dragging = true
-      console.log(this.data)
 
       this.styles = {
         background: this.data.backgroundColor,
@@ -54,9 +45,9 @@ export default {
     },
 
     /*
-     * The mousemove event.
+     * Resize the note every time a user moves their mouse.
      */
-    onMouseMove (e) {
+    resizeNote (e) {
       if (! this.dragging) {
         return
       }
@@ -68,9 +59,9 @@ export default {
     },
 
     /*
-     * The mouseup event.
+     * Save the note upon finishing dragging the note.
      */
-    onMouseUp () {
+    saveNote () {
       // If the position is absolute, we need to save the page Y instead of the
       // client Y coord.
       if (this.data.position === 'absolute') {
@@ -82,6 +73,7 @@ export default {
         styles: this.styles
       })
 
+      // Reset the data and prepare to create another note.
       this.dragging = false
       this.styles = {}
     }
