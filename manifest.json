@@ -2,11 +2,12 @@
   "name": "Sticky Notes",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Sticky Notes is a browser extension that allows you to easily create notes on any page. It is an open source project and can be found and contributed to at http://github.com/kouks/sticky-notes-ext. The API backend for this extension is also open source and the github repository is at http://github.com/kouks/sticky-notes-api.",
+  "description": "Sticky Notes is a browser extension that allows you to easily create notes on any page.",
   "icons": {
     "128": "static/logo.png"
   },
   "browser_action": {
+    "default_icon": "static/logo.png",
     "default_popup": "index.html"
   },
   "content_scripts": [
@@ -19,6 +20,7 @@
     "scripts": ["dist/background.js"]
   },
   "permissions": [
+    "background",
     "storage",
     "tabs"
   ]
